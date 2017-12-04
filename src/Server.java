@@ -14,6 +14,7 @@ public class Server implements Inter{
     ArrayList<Integer> req = new ArrayList();
     ArrayList<Integer> last = new ArrayList();
     Queue<Integer> requests = new LinkedList();
+    Token token;
 
     public int loginRed(int id, int total) throws RemoteException {
 
@@ -41,17 +42,39 @@ public class Server implements Inter{
 
         return id;
     }
+
     public Token getToken() throws RemoteException {
 
-        return new Token("aaa",111);
+        return token;
     }
+
     public void request(int id,int seq) throws RemoteException{
         requests.add(id);
         System.out.println("cola de peticiones: "+ requests);
     }
-    public void waitToken() throws RemoteException{}
-    public void takeToken(int token) throws RemoteException{}
+
+    //Verifica si se debe esperar por el token
+    public boolean waitToken() throws RemoteException{
+        //Si debe esperar por el token se retorna true
+        //Si el token puede ser recibido se retorna false
+        return false;
+    }
+
+    //Recive token actualizado desde un nodo
+    public void takeToken(Token tok) throws RemoteException{
+        token=tok;
+    }
+
+    //Termina proceso servidor
     public void kill() throws RemoteException {}
+
+    //revisa si todos los nodos terminaron su SC para poder terminar el algoritmo
+    public boolean terminar() throws RemoteException{
+        for(int i=1;i<token.listos.length;i++){
+            if (token.listos[i]==0) return false;
+        }
+        return true;
+    }
 
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {

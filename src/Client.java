@@ -16,8 +16,15 @@ public class Client {
         //Declaracion de variables
         String entrada = "";
         Scanner entradaEscaner = new Scanner (System.in);
+        int seq=0;
+        Token token=null;
 
         try {
+            //
+            if (bearer){
+                token=new Token("",total);
+
+            }
             //Coneccion con servidor
             Registry registry = LocateRegistry.getRegistry();
             Inter serv = (Inter) registry.lookup("Test");
@@ -33,25 +40,40 @@ public class Client {
                 System.out.println("id registrado: " + check_id);
             }
 
-            //Se solicita token
-            Thread.sleep(delay);
-            System.out.print("Solicitando Token");
-            serv.request(id,1);//hay que cambiar ese 1
-
             do{
 
-                //Hacer algo hasta que se obtenga el token
+                //Se solicita token
+                Thread.sleep(delay);
+                seq++;
+                System.out.println("Solicitando Token... peticion: "+seq);
+                serv.request(id,seq);
 
-            }while (true);
+                //Se verifica si el token puede ser recibido
+                if(!serv.waitToken()){
+                    token=serv.getToken();
+                    System.out.println("Token recibido con exito!");
+                    break;
+                }
+
+            }while (token==null);
 
             //Usar Token (Seccion Critica)
+            System.out.print("Entrando en seccion critica...");
+            System.out.println(token.inf);//Imprime informacion del token
+            token.usar(id);
+            Thread.sleep(1000);
+            System.out.print("Fin seccion critica");
 
-            //Avisar que ya se uso el token
+            //Avisar que ya se uso el token y se devuelve
+            serv.takeToken(token);
 
             //Comprobar si ya todos usaron el token
+            if (serv.terminar()) {
+                // Matar el proceso remoto con kill()
+                serv.kill();
+            }
 
-            // Matar el proceso remoto con kill()
-
+            System.out.println("Proceso finalizado con exito!");
         }
         catch (Exception e){
             e.printStackTrace();

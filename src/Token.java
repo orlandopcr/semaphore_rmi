@@ -1,13 +1,19 @@
 import javax.swing.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Token implements Serializable {
     public String inf ;
-    public int num ;
+    Integer[] listos;
 
-    Token(String info, int numero){
+    Token(String info, int total){
         inf ="Informacion Token";
-        num = 123;
+        listos = new Integer[total+1];
+        listos[0]=1;
+    }
+
+    public void usar(int id){
+        listos[id]=1;
     }
 
 
