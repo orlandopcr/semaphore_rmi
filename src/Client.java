@@ -21,7 +21,15 @@ public class Client {
         // peticion de id incremental al server, despues hay que tomar la de la linea de comandos
         serv.loginRed(id, total);
 
-        System.out.println("id registrado al proceso:  " + id);
+        try {
+            Thread.sleep(Integer.parseInt(delay));
+        }catch (Exception e){
+            System.out.println("no pude esperar");
+        }
+
+        //el uno es por que no se que pasa con ese parametro aun
+
+        serv.request(Integer.parseInt(id), 1);
         System.out.println(serv.getToken().inf);
 
         //para que el proceso quede abierto

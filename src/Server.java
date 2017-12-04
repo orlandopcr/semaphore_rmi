@@ -45,6 +45,7 @@ public class Server implements Inter{
 
     public void request(int id,int seq) throws RemoteException{
         requests.add(id);
+        System.out.println("cola de procesos request: "+requests);
     }
 
     public void waitToken() throws RemoteException{}
