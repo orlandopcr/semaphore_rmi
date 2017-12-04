@@ -19,6 +19,14 @@ public class Server implements Inter{
 
         int id_entero = Integer.parseInt(id);
         int total_entero = Integer.parseInt(total);
+
+
+        for(int i = 0; i < nodos.size(); i = i+1){
+            if(id_entero == nodos.get(i)){
+                return -1;
+            }
+        }
+
         nodos.add(id_entero);
 
         if (nodos.size()== total_entero){

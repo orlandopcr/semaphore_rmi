@@ -19,7 +19,17 @@ public class Client {
 
 
         // peticion de id incremental al server, despues hay que tomar la de la linea de comandos
-        serv.loginRed(id, total);
+        int check_id = serv.loginRed(id, total);
+
+        if (check_id == -1){
+            System.out.println("id repetido");
+            return;
+        }
+        else {
+            System.out.println("id registrado: " + check_id);
+        }
+
+
 
         try {
             Thread.sleep(Integer.parseInt(delay));
