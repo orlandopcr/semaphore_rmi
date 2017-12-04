@@ -10,7 +10,7 @@ public interface Inter extends Remote {
     void takeToken(int token) throws RemoteException;
     void kill() throws RemoteException;
 
-    int loginRed(String id, String total) throws RemoteException;
+    int loginRed(int id, int total) throws RemoteException;
     Token getToken() throws RemoteException;
 
 }

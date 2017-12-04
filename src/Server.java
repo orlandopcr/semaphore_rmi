@@ -15,27 +15,23 @@ public class Server implements Inter{
     ArrayList<Integer> last = new ArrayList();
     Queue<Integer> requests = new LinkedList();
 
-    public int loginRed(String id, String total) throws RemoteException {
-
-        int id_entero = Integer.parseInt(id);
-        int total_entero = Integer.parseInt(total);
-
+    public int loginRed(int id, int total) throws RemoteException {
 
         for(int i = 0; i < nodos.size(); i = i+1){
-            if(id_entero == nodos.get(i)){
+            if(id == nodos.get(i)){
                 return -1;
             }
         }
 
-        nodos.add(id_entero);
+        nodos.add(id);
 
-        if (nodos.size()== total_entero){
+        if (nodos.size()== total){
 
-            for (int i = 0 ; i < total_entero; i = i+1){
+            for (int i = 0 ; i < total; i = i+1){
                 req.add(0);
 
             }
-            for (int i = 0 ; i < total_entero; i = i+1){
+            for (int i = 0 ; i < total; i = i+1){
                 last.add(0);
             }
             System.out.println("req:  " + req);
@@ -43,19 +39,16 @@ public class Server implements Inter{
 
         }
 
-        return id_entero;
+        return id;
     }
-
     public Token getToken() throws RemoteException {
 
         return new Token("aaa",111);
     }
-
     public void request(int id,int seq) throws RemoteException{
         requests.add(id);
-        System.out.println("cola de procesos request: "+requests);
+        System.out.println("cola de peticiones: "+ requests);
     }
-
     public void waitToken() throws RemoteException{}
     public void takeToken(int token) throws RemoteException{}
     public void kill() throws RemoteException {}
@@ -63,11 +56,18 @@ public class Server implements Inter{
 
     public static void main(String[] args) throws RemoteException, AlreadyBoundException {
 
+
+        System.out.println("Iniciando Servidor...");
+
         Inter serv= (Inter) new Server() ;
         Remote stub = UnicastRemoteObject.exportObject(serv, 0);
 
         Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
         registry.bind("Test", stub);
+
+        System.out.println("Servidor iniciado Correctamente.");
+
+
 
     }
 
