@@ -4,17 +4,21 @@ import java.util.ArrayList;
 
 public class Token implements Serializable {
     public String inf ;
-    Integer[] listos;
+    ArrayList<Integer> listos;
 
     Token(String info, int total){
-        inf ="Informacion Token";
-        listos = new Integer[total+1];
-        listos[0]=1;
+        inf =info;
+        listos = new ArrayList<>(total);
+        while(listos.size() < total) listos.add(0);
+
     }
 
     public void usar(int id){
-        listos[id]=1;
+        listos.set(id,1);
     }
 
+    public String getInf() {
+        return inf;
+    }
 
 }

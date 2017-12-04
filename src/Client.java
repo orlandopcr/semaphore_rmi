@@ -11,7 +11,7 @@ public class Client {
         Integer id  =  Integer.parseInt(args[0]);
         Integer total = Integer.parseInt(args[1]);
         Integer delay = Integer.parseInt(args[2]);
-        boolean bearer = Boolean.getBoolean(args[3]);
+        boolean bearer = Boolean.parseBoolean(args[3]);
 
         //Declaracion de variables
         String entrada = "";
@@ -23,10 +23,6 @@ public class Client {
 
 
         try {
-            //
-            if (bearer){
-                token=new Token("",total);
-            }
             //Coneccion con servidor
             Registry registry = LocateRegistry.getRegistry();
             Inter serv = (Inter) registry.lookup("Test");
@@ -44,9 +40,11 @@ public class Client {
 
             entradaEscaner.nextLine();
 
-
-
-            do{
+            if (bearer){
+                token=new Token("aaa",total);
+            }
+            System.out.println(bearer);
+            while (token==null){
 
                 //Se solicita token
                 Thread.sleep(delay);
@@ -61,11 +59,11 @@ public class Client {
                     break;
                 }
 
-            }while (token==null);
+            }
 
             //Usar Token (Seccion Critica)
             System.out.print("Entrando en seccion critica...");
-            System.out.println(token.inf);//Imprime informacion del token
+            System.out.println(token.getInf());//Imprime informacion del token
             token.usar(id);
             Thread.sleep(delay);
             System.out.print("Fin seccion critica");

@@ -16,6 +16,12 @@ public class Server implements Inter{
     Queue<Integer> requests = new LinkedList();
     Token token;
 
+    Server(int n){
+        while(last.size() < n) last.add(0);
+        while(req.size() < n) req.add(0);
+
+    }
+
     public int loginRed(int id, int total) throws RemoteException {
         if (nodos.size()!=0){
             for(int i = 0; i < nodos.size(); i = i+1){
@@ -49,6 +55,7 @@ public class Server implements Inter{
     }
 
     public Token getToken(int id) throws RemoteException {
+        System.out.println("El id que solicito es: "+id );
         last.set(id, 1);
         return token;
     }
@@ -64,7 +71,6 @@ public class Server implements Inter{
         //Si debe esperar por el token se retorna true
         for (int i = 0 ; i<last.size();i=i+1){
             if (last.get(i)!=0){
-
                 return true;
             }
         }
@@ -73,8 +79,6 @@ public class Server implements Inter{
 
         return false;
     }
-
-
 
     //Recive token actualizado desde un nodo
     public void takeToken(Token tok, int id) throws RemoteException{
@@ -88,8 +92,9 @@ public class Server implements Inter{
 
     //revisa si todos los nodos terminaron su SC para poder terminar el algoritmo
     public boolean terminar() throws RemoteException{
-        for(int i=1;i<token.listos.length;i++){
-            if (token.listos[i]==0) return false;
+        for(int i=0;i<token.listos.size();i++){
+            System.out.println(i);
+            if (token.listos.get(i)==0) return false;
         }
         return true;
     }
@@ -100,7 +105,7 @@ public class Server implements Inter{
 
         System.out.println("Iniciando Servidor...");
 
-        Inter serv= (Inter) new Server() ;
+        Inter serv= (Inter) new Server(Integer.parseInt(args[0])) ;
         Remote stub = UnicastRemoteObject.exportObject(serv, 0);
 
         Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
