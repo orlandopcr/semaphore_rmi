@@ -5,12 +5,15 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Server implements Inter{
 
     ArrayList<Integer> nodos = new ArrayList();
     ArrayList<Integer> req = new ArrayList();
     ArrayList<Integer> last = new ArrayList();
+    Queue<Integer> requests = new LinkedList();
 
     public int loginRed(String id, String total) throws RemoteException {
 
@@ -40,7 +43,10 @@ public class Server implements Inter{
         return new Token("aaa",111);
     }
 
-    public void request(int id,int seq) throws RemoteException{}
+    public void request(int id,int seq) throws RemoteException{
+        requests.add(id);
+    }
+
     public void waitToken() throws RemoteException{}
     public void takeToken(int token) throws RemoteException{}
     public void kill() throws RemoteException {}
