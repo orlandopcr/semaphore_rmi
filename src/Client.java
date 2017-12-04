@@ -16,14 +16,16 @@ public class Client {
         //Declaracion de variables
         String entrada = "";
         Scanner entradaEscaner = new Scanner (System.in);
+
+
         int seq=0;
         Token token=null;
+
 
         try {
             //
             if (bearer){
                 token=new Token("",total);
-
             }
             //Coneccion con servidor
             Registry registry = LocateRegistry.getRegistry();
@@ -40,6 +42,10 @@ public class Client {
                 System.out.println("id registrado: " + check_id);
             }
 
+            entradaEscaner.nextLine();
+
+
+
             do{
 
                 //Se solicita token
@@ -50,7 +56,7 @@ public class Client {
 
                 //Se verifica si el token puede ser recibido
                 if(!serv.waitToken()){
-                    token=serv.getToken();
+                    token=serv.getToken(id);
                     System.out.println("Token recibido con exito!");
                     break;
                 }
@@ -61,11 +67,11 @@ public class Client {
             System.out.print("Entrando en seccion critica...");
             System.out.println(token.inf);//Imprime informacion del token
             token.usar(id);
-            Thread.sleep(1000);
+            Thread.sleep(delay);
             System.out.print("Fin seccion critica");
 
             //Avisar que ya se uso el token y se devuelve
-            serv.takeToken(token);
+            serv.takeToken(token,id);
 
             //Comprobar si ya todos usaron el token
             if (serv.terminar()) {

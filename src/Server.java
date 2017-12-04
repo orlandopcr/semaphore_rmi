@@ -17,14 +17,19 @@ public class Server implements Inter{
     Token token;
 
     public int loginRed(int id, int total) throws RemoteException {
-
-        for(int i = 0; i < nodos.size(); i = i+1){
-            if(id == nodos.get(i)){
-                return -1;
+        if (nodos.size()!=0){
+            for(int i = 0; i < nodos.size(); i = i+1){
+                if(id == nodos.get(i)){
+                    return -1;
+                }
             }
+            nodos.add(id);
+        }
+        else {
+            nodos.add(id);
         }
 
-        nodos.add(id);
+
 
         if (nodos.size()== total){
 
@@ -43,8 +48,8 @@ public class Server implements Inter{
         return id;
     }
 
-    public Token getToken() throws RemoteException {
-
+    public Token getToken(int id) throws RemoteException {
+        last.set(id, 1);
         return token;
     }
 
@@ -55,14 +60,27 @@ public class Server implements Inter{
 
     //Verifica si se debe esperar por el token
     public boolean waitToken() throws RemoteException{
+        System.out.println("quien tiene el toke:" + last);
         //Si debe esperar por el token se retorna true
+        for (int i = 0 ; i<last.size();i=i+1){
+            if (last.get(i)!=0){
+
+                return true;
+            }
+        }
+
         //Si el token puede ser recibido se retorna false
+
         return false;
     }
 
+
+
     //Recive token actualizado desde un nodo
-    public void takeToken(Token tok) throws RemoteException{
+    public void takeToken(Token tok, int id) throws RemoteException{
         token=tok;
+        last.set(id,0);
+        requests.remove(id);
     }
 
     //Termina proceso servidor
