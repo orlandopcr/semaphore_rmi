@@ -5,7 +5,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
 
-public class Client {
+public class Process {
 
     public static void main(String[] args) throws RemoteException, NotBoundException {
         //Asignacion de parametros
@@ -24,7 +24,7 @@ public class Client {
 
 
         try {
-            //Coneccion con servidor
+            //Coneccion con servido
             Registry registry = LocateRegistry.getRegistry();
             Inter serv = (Inter) registry.lookup("Test");
 
