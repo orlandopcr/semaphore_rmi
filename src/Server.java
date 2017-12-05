@@ -19,7 +19,6 @@ public class Server implements Inter{
     Server(int n){
         while(last.size() < n) last.add(0);
         while(req.size() < n) req.add(0);
-
     }
 
     public int loginRed(int id, int total) throws RemoteException {
@@ -55,13 +54,12 @@ public class Server implements Inter{
     }
 
     public Token getToken(int id) throws RemoteException {
-        System.out.println("El id que solicito es: "+id );
         last.set(id, 1);
         return token;
     }
 
     public void request(int id,int seq) throws RemoteException{
-        requests.add(id);
+        if (!requests.contains(id))requests.add(id);
         System.out.println("cola de peticiones: "+ requests);
     }
 
