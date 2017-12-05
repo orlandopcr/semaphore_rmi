@@ -15,7 +15,6 @@ public class Process {
         boolean bearer = Boolean.parseBoolean(args[3]);
 
         //Declaracion de variables
-        String entrada = "";
         Scanner entradaEscaner = new Scanner (System.in);
 
 
@@ -38,13 +37,11 @@ public class Process {
             else {
                 System.out.println("id registrado: " + check_id);
             }
-
-            entradaEscaner.nextLine();
+            System.out.println("Estado Semaforo: Verde\n");
 
             if (bearer){
-                token=new Token("aaa",total);
+                token=new Token("Informacion Token",total);
             }
-            System.out.println(bearer);
             while (token==null){
 
                 //Se solicita token
@@ -52,6 +49,7 @@ public class Process {
                 seq++;
                 System.out.println("Solicitando Token... peticion: "+seq);
                 serv.request(id,seq);
+                System.out.println("Estado Semaforo: Amarillo\n");
 
                 //Se verifica si el token puede ser recibido
                 if(!serv.waitToken()){
@@ -63,11 +61,13 @@ public class Process {
             }
 
             //Usar Token (Seccion Critica)
-            System.out.print("Entrando en seccion critica...");
-            System.out.println(token.getInf());//Imprime informacion del token
+            System.out.println("Entrando en seccion critica...");
+            System.out.println("Estado Semaforo: Rojo\n");
+            System.out.println(token.getInf()+"\n");//Imprime informacion del token
             token.usar(id);
             Thread.sleep(delay);
-            System.out.print("Fin seccion critica");
+            System.out.println("Fin seccion critica");
+            System.out.println("Estado Semaforo: Verde\n");
 
             //Avisar que ya se uso el token y se devuelve
             serv.takeToken(token,id);
