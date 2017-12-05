@@ -1,5 +1,6 @@
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.UnmarshalException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.Scanner;
@@ -76,12 +77,14 @@ public class Client {
                 // Matar el proceso remoto con kill()
                 serv.kill();
             }
-
+        }
+        catch (UnmarshalException e){
             System.out.println("Proceso finalizado con exito!");
         }
         catch (Exception e){
             e.printStackTrace();
         }
     }
+
 
 }

@@ -16,9 +16,10 @@ public class Server implements Inter{
     Queue<Integer> requests = new LinkedList();
     Token token;
 
-    Server(int n){
+    Server(int n, int id_token){
         while(last.size() < n) last.add(0);
         while(req.size() < n) req.add(0);
+        last.set(id_token,1);
     }
 
     public int loginRed(int id, int total) throws RemoteException {
@@ -33,22 +34,8 @@ public class Server implements Inter{
         else {
             nodos.add(id);
         }
-
-
-
-        if (nodos.size()== total){
-
-            for (int i = 0 ; i < total; i = i+1){
-                req.add(0);
-
-            }
-            for (int i = 0 ; i < total; i = i+1){
-                last.add(0);
-            }
-            System.out.println("req:  " + req);
-            System.out.println("last:  "+ last);
-
-        }
+        System.out.println("req:  " + req);
+        System.out.println("last:  "+ last);
 
         return id;
     }
@@ -65,7 +52,7 @@ public class Server implements Inter{
 
     //Verifica si se debe esperar por el token
     public boolean waitToken() throws RemoteException{
-        System.out.println("quien tiene el toke:" + last);
+        System.out.println("quien tiene el token:" + last);
         //Si debe esperar por el token se retorna true
         for (int i = 0 ; i<last.size();i=i+1){
             if (last.get(i)!=0){
@@ -88,12 +75,11 @@ public class Server implements Inter{
     }
 
     //Termina proceso servidor
-    public void kill() throws RemoteException {}
+    public void kill() throws RemoteException {System.exit(1);}
 
     //revisa si todos los nodos terminaron su SC para poder terminar el algoritmo
     public boolean terminar() throws RemoteException{
         for(int i=0;i<token.listos.size();i++){
-            System.out.println(i);
             if (token.listos.get(i)==0) return false;
         }
         return true;
@@ -105,7 +91,7 @@ public class Server implements Inter{
 
         System.out.println("Iniciando Servidor...");
 
-        Inter serv= (Inter) new Server(Integer.parseInt(args[0])) ;
+        Inter serv= (Inter) new Server(Integer.parseInt(args[0]),Integer.parseInt(args[1])) ;
         Remote stub = UnicastRemoteObject.exportObject(serv, 0);
 
         Registry registry = LocateRegistry.createRegistry(Registry.REGISTRY_PORT);
