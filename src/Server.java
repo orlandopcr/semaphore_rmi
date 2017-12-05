@@ -73,6 +73,8 @@ public class Server implements Inter{
             }
         }
 
+        if (token==null) return true;
+
         //Si el token puede ser recibido se retorna false
 
         return false;
